@@ -3,7 +3,6 @@ import validators
 from flask import Flask, request, render_template, redirect
 
 DATABASE = "urls.db"
-TABLE = "urls"
 app = Flask(__name__)
 
 @app.route("/")
@@ -15,7 +14,7 @@ def home_addEntry():
 	longUrl = request.form['longURl']
 	if not validators.url(longUrl):
 		return "Bad input"
-	short = logic.addEntry(longUrl, logic.connect(DATABASE), TABLE)
+	short = logic.addEntry(longUrl, logic.connect(DATABASE))
 	return "Sucessfully shortened: "+ short
 
 @app.route("/s/<short>")

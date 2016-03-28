@@ -11,7 +11,7 @@ def connect(database):
 def shorten():
 	r = str(randint(0,1e100)) # 0 to googol so 1x10^100
 	short = b64.b64encode(r)[:8]
-	while short in getShorts(connect(DATABASE), TABLE):
+	while short in getShorts(connect(DATABASE)):
 		r = str(randint(0,1e100))
 		short = b64.b64encode(r)[:8]
 	return short
