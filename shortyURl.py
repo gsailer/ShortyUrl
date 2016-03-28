@@ -28,4 +28,4 @@ def router(short):
 	return redirect(longUrl)
 
 if __name__ == "__main__":
-    app.run(host='172.24.41.230')
+    app.run()
