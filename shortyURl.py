@@ -1,7 +1,5 @@
-# controller
 import logic
 import validators
-import sqlite3
 from flask import Flask, request, render_template, redirect
 
 DATABASE = "urls.db"
@@ -28,4 +26,4 @@ def router(short):
 	return redirect(longUrl)
 
 if __name__ == "__main__":
-    app.run()
+	app.run()

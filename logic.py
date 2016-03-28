@@ -1,4 +1,3 @@
-# logic.py
 import sqlite3
 import base64 as b64
 from random import randint
@@ -17,7 +16,7 @@ def shorten():
 		short = b64.b64encode(r)[:8]
 	return short
 
-def addEntry(longURl, conn, table):
+def addEntry(longURl, conn):
 	c = conn.cursor()
 	short = shorten()
 	c.execute('CREATE TABLE if not exists urls (url text, short text)')
@@ -33,7 +32,7 @@ def resolve(shortURL, conn):
 	conn.close()
 	return longUrl[3:-3]
 
-def getShorts(conn, table):
+def getShorts(conn):
 	c = conn.cursor()
 	c.execute('SELECT short from urls')
 	shorts = c.fetchall()
