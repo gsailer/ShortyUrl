@@ -5,24 +5,27 @@ from flask import Flask, request, render_template, redirect
 DATABASE = "urls.db"
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
-	return render_template("home.html")
+    return render_template("home.html")
+
 
 @app.route("/", methods=['POST'])
 def home_addEntry():
-	longUrl = request.form['longURl']
-	if not validators.url(longUrl):
-		return "Bad input"
-	short = logic.addEntry(longUrl, logic.connect(DATABASE))
-	return "Sucessfully shortened: "+ short
+    longUrl = request.form['longURl']
+    if not validators.url(longUrl):
+        return "Bad input"
+    short = logic.addEntry(longUrl, logic.connect(DATABASE))
+    return "Sucessfully shortened: " + short
+
 
 @app.route("/s/<short>")
 def router(short):
-	longUrl = logic.resolve(short,logic.connect(DATABASE))
-	if longUrl == 0:
-		return "The shortened Page you are looking for is not available"
-	return redirect(longUrl)
+    longUrl = logic.resolve(short, logic.connect(DATABASE))
+    if longUrl == 0:
+        return "The shortened Page you are looking for is not available"
+    return redirect(longUrl)
 
 if __name__ == "__main__":
-	app.run()
+    app.run()
