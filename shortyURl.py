@@ -15,10 +15,10 @@ def home():
 def home_addEntry():
     longUrl = request.form['longURl']
     if not validators.url(longUrl):
-        return "Bad input"
+        return render_template("bad_input.html")
     short = logic.addEntry(longUrl, logic.connect(DATABASE))
-    return "Sucessfully shortened: " + short
-
+    current_url = "/s/" + short
+    return render_template("shortened.html", url = current_url, short = short)
 
 @app.route("/s/<short>")
 def router(short):
@@ -28,4 +28,4 @@ def router(short):
     return redirect(longUrl)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

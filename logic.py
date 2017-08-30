@@ -40,6 +40,7 @@ def longURlInDB(longUrl, conn):
     """Check if the url to be shortend was already shortened before."""
     c = conn.cursor()
     found = False
+    c.execute('CREATE TABLE if not exists urls (url text, short text)')
     c.execute('select short from urls where url=' + '"' + longUrl + '"')
     short = c.fetchone()
     if short:
