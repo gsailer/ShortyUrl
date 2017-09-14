@@ -1,0 +1,6 @@
+general:
+  title: Shorty
+  sqlite_location: ./.urls.db
+web_paths:
+  main: /shortener
+  shortened: /s/

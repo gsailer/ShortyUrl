@@ -1,10 +1,11 @@
 """functions that deal with the database logic."""
+import yaml
 import sqlite3
 import base64 as b64
 from random import randint
 
-DATABASE = "urls.db"
-
+with open("config.yml", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
 
 def connect(database):
     """Return sqlite3 Connection."""
@@ -15,7 +16,7 @@ def shorten():
     """Generate a random Integer converted to base64."""
     r = str(randint(0, 1e100))  # 0 to googol so 1x10^100
     short = b64.b64encode(r)[:8]
-    while short in getShorts(connect(DATABASE)):
+    while short in getShorts(connect(cfg['general']['sqlite_location'])):
         r = str(randint(0, 1e100))
         short = b64.b64encode(r)[:8]
     return short
