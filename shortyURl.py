@@ -1,31 +1,35 @@
+import yaml
 import logic
 import validators
 from flask import Flask, request, render_template, redirect
 
-DATABASE = "urls.db"
 app = Flask(__name__)
 
+with open("config.yml", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
 
-@app.route("/")
+@app.route(cfg['web_paths']['main'])
 def home():
-    return render_template("home.html")
+    return render_template("home.html", title=cfg['general']['title'], url=cfg['web_paths']['main'])
 
 
-@app.route("/", methods=['POST'])
+@app.route(cfg['web_paths']['main'], methods=['POST'])
 def home_addEntry():
     longUrl = request.form['longURl']
     if not validators.url(longUrl):
-        return render_template("bad_input.html")
-    short = logic.addEntry(longUrl, logic.connect(DATABASE))
-    current_url = "/s/" + short
-    return render_template("shortened.html", url = current_url, short = short)
+        return render_template("bad_input.html", title=cfg['general']['title'])
+    short = logic.addEntry(longUrl, logic.connect(cfg['general']['sqlite_location']))
+    current_url = cfg['web_paths']['shortened'] + short
+    return render_template("shortened.html", url=current_url, short=short, title=cfg['general']['title'])
 
-@app.route("/s/<short>")
+
+@app.route(cfg['web_paths']['shortened']+"<short>")
 def router(short):
-    longUrl = logic.resolve(short, logic.connect(DATABASE))
-    if longUrl == 0:
-        return "The shortened Page you are looking for is not available"
+    longUrl = logic.resolve(short, logic.connect(cfg['general']['sqlite_location']))
+    if not longUrl:
+        return render_template("not_available.html", title=cfg['general']['title'])
     return redirect(longUrl)
+
 
 if __name__ == "__main__":
     app.run()
