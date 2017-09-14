@@ -23,8 +23,9 @@ def home_addEntry():
 @app.route("/s/<short>")
 def router(short):
     longUrl = logic.resolve(short, logic.connect(DATABASE))
-    if longUrl == 0:
-        return "The shortened Page you are looking for is not available"
+    if not longUrl:
+        return render_template("not_available.html")
+	#return "The shortened Page you are looking for is not available"
     return redirect(longUrl)
 
 if __name__ == "__main__":
